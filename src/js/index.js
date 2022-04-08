@@ -25,13 +25,14 @@ onPageStart();
 async function onPageStart() {
     galleryClean();
     try {
-        const dataMoviesPopular = await imgApiService.fetchMoviesPopular();
-        const dataGenresList = await imgApiService.fetchGenresList();
-        const dataGenres = dataGenresList.genres;
-        const dataMoviesPop = dataMoviesPopular.results;
+        const dataMoviesPopular = await imgApiService.fetchMoviesPopular(); // данные из API по запросу "популярные фильмы" (объект - { page: 1, results: (20) […], total_pages: 33054, total_results: 661074 })
+        const dataGenresList = await imgApiService.fetchGenresList(); // данные из API по запросу "жанры" (объект - { genres: (19) […] })
+        const dataGenres = dataGenresList.genres; // массив объектов [{ id: 28, name: "Action" } ..... { id: 76, name: "Horor" }]
+        const dataMoviesPop = dataMoviesPopular.results; // массив объектов фильмов [{ adult: false, backdrop_path: "/x747ZvF0CcYYTTpPRCoUrxA2cYy.jpg", id: 406759, … } ...]
         console.log(dataMoviesPopular);
-        // console.log(dataGenresList);
-        // console.log(dataGenres);
+        console.log(dataGenresList);
+        console.log(dataGenres);
+
         if (dataMoviesPopular.total_pages < 2) {
             btnLoadMoreRemove();
             btnLoadPrevRemove();
