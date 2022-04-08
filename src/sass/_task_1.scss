@@ -8,19 +8,6 @@
     background-color: rgb(220, 220, 247);
     text-align: center;
 }
-.backGround.overlay {  /* Фоновое изображение */
-    min-height: 730px;
-    max-width: 1600px;
-    margin-left: auto;
-    margin-right: auto;
-
-    background-image: linear-gradient( /* Затемнение фонового изображения */
-        to right, rgba(47, 48, 58, 0.4), rgba(47, 48, 58, 0.4)),
-        url(../images/bgImage_1600.jpg); /* Изображение для фона*/
-    background-repeat: no-repeat; /* Не множить*/
-    background-position: center; /* Центрировать*/
-    background-size: cover; /* заполнить блок полностью */
-}
 
 .page-title {
     font-family: Roboto;
@@ -165,8 +152,7 @@
 .load-more {
     display: block;
     text-align: center;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 20px;
 
     max-width: 300px;
     padding-left: 20px;
@@ -187,6 +173,31 @@
     }
 }
 
+.load-prev {
+    display: block;
+    text-align: center;
+    margin-right: 20px;
+
+    max-width: 300px;
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 45px;
+    border: transparent;
+    border-radius: 5px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
+    background-color: rgb(79, 79, 189);
+    cursor: pointer;
+
+    @include font(white, 700, 18px, 1.88, 0.06em);
+
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover,
+    &:focus {
+        background-color: #2a2191;
+    }
+}
+
 .load-more.displayNone {
     display: none;
 }
@@ -201,7 +212,7 @@
     margin-bottom: 5px;
 }
 .photo-card {
-    flex-basis: calc(100% / 4 - 20px); /*----calc((100% / кол-во элементов в строке - значение марджина)----*/
+    flex-basis: calc(100% / 5 - 20px); /*----calc((100% / кол-во элементов в строке - значение марджина)----*/
     margin-right: 20px;
     margin-bottom: 20px;
     background-color: rgb(229, 229, 240);
@@ -221,13 +232,31 @@
     padding-right: 5px;
     @include font(black, 400, 12px, 1.17, 0.01em);
     display: flex;
-    justify-content: space-between;
+    justify-content:flex-start;
+    align-items: center;
 }
 
 .card {
     width: 100%;
 }
+.movieTitle {
+    text-align: start;
+    @include font(black, 700, 14px, 1.17, 0.06em);
+    margin-left: 10px;
+    margin-bottom: 0;
+}
 
-.sentinel {
-    display: none;
+.info-item {
+    padding-left: 5px;
+    @include font(rgb(226, 133, 10), 400, 11px, 1.17, 0.01em);
+    display: flex;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page {
+    @include font(black, 700, 20px, 1.88, 0.06em);
 }

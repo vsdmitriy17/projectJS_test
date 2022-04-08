@@ -5,36 +5,48 @@ import { Loading } from 'notiflix/build/notiflix-loading-aio';
 export default class ImgApiService {
     constructor() {
         // путь к API - эндпоинт, базовый URL, точка входа в API.
-        this.BASE_URL = 'https://pixabay.com/api/';
+        this.BASE_URL = 'https://api.themoviedb.org/3';
         // Ключ API
-        this.API_KEY = '?key=25666738-83e6abd6c600844fdf6c33b5c';
+        this.API_KEY = '?api_key=0fd7f514ed7f6fbeb459b215007787ac';
         // параметры настроек (выборки) запроса
-        this.lang = "lang=en";
-        this.image_type = "image_type=photo";
-        this.orientation = "orientation=horizontal";
-        this.safesearch = "safesearch=true";
+        this.popular = "/movie/popular";
+        this.genre = "/genre/movie/list";
+        this.lang = "language=en-US";
+        this.imgLang = "include_image_language=en,null";
+        // this.image_type = "image_type=photo";
+        // this.orientation = "orientation=horizontal";
+        // this.safesearch = "safesearch=true";
         this.page = 1;
-        this.per_page = 40;
-        this.searchQuery = '';
+        // this.per_page = 40;
+        // this.searchQuery = '';
     }
 
-    async fetchImages() {
+    async fetchMoviesPopular() {
         Loading.circle({onSearchFormSubmit: true, svgSize: '80px',}); // библ. Notiflix
-        const searchParams = `${this.lang}&${this.image_type}&${this.orientation}&${this.safesearch}&page=${this.page}&per_page=${this.per_page}`;
-        const dataObject = await axios.get(`${this.BASE_URL}${this.API_KEY}&q=${this.searchQuery}&${searchParams}`); // запрос через библ. axios
-        console.log(dataObject);
+        const searchParams = `${this.lang}&${this.imgLang}&${this.page}`;
+        const dataObject = await axios.get(`${this.BASE_URL}${this.popular}${this.API_KEY}&${searchParams}`); // запрос через библ. axios
+        const { data } = dataObject;
+        // console.log(data);
         this.page += 1; //увеличиваем номер стр. при каждом запросе
         Loading.remove(); // библ. Notiflix
-        return dataObject;
+        return data;
+    }
+
+    async fetchGenresList() {
+        const searchParams = `${this.lang}`;
+        const dataObject = await axios.get(`${this.BASE_URL}${this.genre}${this.API_KEY}&${searchParams}`); // запрос через библ. axios
+        const { data } = dataObject;
+        // console.log(data);
+        return data;
     }
     
-    get query() {
-        return this.searchQuery;
-    }
+    // get query() {
+    //     return this.searchQuery;
+    // }
     
-    set query(newQuery) {
-        this.searchQuery = newQuery;
-    }
+    // set query(newQuery) {
+    //     this.searchQuery = newQuery;
+    // }
 
     resetPage() {
         this.page = 1;

@@ -3,28 +3,34 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import { lightbox } from "./openLightbox.js";
 
-function galleryCollectionCreate(data) {
+function galleryCollectionCreate(data,dataGen) {
     elems.divGalleryEl.insertAdjacentHTML('beforeend',
-        (data.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
+        (data.map(({ genre_ids, id, poster_path, release_date, title }) => {
+            let ganresArrey = [];
+            genre_ids.map((genre_id) => {
+                ganresArrey.push(dataGen.find(genere => genere.id === genre_id).name);
+                return ganresArrey;
+            });
+            const genres = ganresArrey.join(', ');
             return `
                 
                     <div class="photo-card">
-                        <a href="${largeImageURL}">
-                            <img class="card" src="${webformatURL}" alt="${tags}" loading="lazy" />
+                        <a href="https://image.tmdb.org/t/p/w500/${poster_path}" id="${id}">
+                            <img class="card" src="https://image.tmdb.org/t/p/w500/${poster_path}" alt="${title}" loading="lazy" />
                         </a>
-                        <div class="info">
-                            <p class="info-item">
-                                <b>Likes:</b> ${likes}
-                            </p>
-                            <p class="info-item">
-                                <b>Views:</b> ${views}
-                            </p>
-                            <p class="info-item">
-                                <b>Comments:</b> ${comments}
-                            </p>
-                            <p class="info-item">
-                                <b>Downloads:</b> ${downloads}
-                            </p>
+                        <div>
+                            <h3 class="movieTitle">
+                                ${title}
+                            </h3>
+                            <div class="info">
+                                <p class="info-item">
+                                    ${genres}
+                                </p>
+                                <span class="info-item"> | </span>
+                                <p class="info-item">
+                                    ${release_date.slice(0, 4)}
+                                </p>
+                            </div>
                         </div>
                     </div>
                 `;
