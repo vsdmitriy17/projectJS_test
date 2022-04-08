@@ -6,6 +6,7 @@ const elems = {
     btnSearchEl: document.querySelector('.form__btn'),
     divGalleryEl: document.querySelector('.gallery'),
     btnLoadMoreEl: document.querySelector('.load-more'),
+    btnLoadPrevEl: document.querySelector('.load-prev'),
 };
 
 export { elems }

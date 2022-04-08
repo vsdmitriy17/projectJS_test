@@ -14,4 +14,18 @@ function btnLoadMoreRemove() {
     return;
 };
 
-export { btnLoadMoreAdd, btnLoadMoreRemove };
+function btnLoadPrevAdd() {
+    if (elems.btnLoadPrevEl.classList.contains('displayNone')) {
+        elems.btnLoadPrevEl.classList.remove('displayNone');
+    }
+    return;
+};
+
+function btnLoadPrevRemove() {
+    if (!elems.btnLoadPrevEl.classList.contains('displayNone')) {
+        elems.btnLoadPrevEl.classList.add('displayNone');
+    }
+    return;
+};
+
+export { btnLoadMoreAdd, btnLoadMoreRemove, btnLoadPrevAdd, btnLoadPrevRemove };

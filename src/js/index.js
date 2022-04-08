@@ -7,7 +7,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 // элементы, классы, ф-ции
 import { elems } from "./elems.js";
 import { bgImageRemove, bgImageAdd } from "./bgImage.js"
-import { btnLoadMoreAdd, btnLoadMoreRemove } from "./btnLoadMore.js";
+import { btnLoadMoreAdd, btnLoadMoreRemove, btnLoadPrevAdd, btnLoadPrevRemove } from "./btnLoadMore.js";
 import ImgApiService from "./ImgApiService.js";
 import { errorCatch } from "./errorCatch.js";
 import { lightbox } from "./openLightbox.js";
@@ -16,9 +16,8 @@ import { notiflixOptions, notiflixReportOptions } from "./notiflixOptions.js";
 
 // elems.formEl.addEventListener('submit', onSearchFormSubmit);
 // elems.btnLoadMoreEl.addEventListener('click', onBtnLoadMoreClick);
+// elems.btnLoadPrevEl.addEventListener('click', onBtnLoadPrevClick);
 // elems.divGalleryEl.addEventListener('click', onGalleryCardClick);
-
-btnLoadMoreAdd();
 
 const imgApiService = new ImgApiService();
 onPageStart();
@@ -33,8 +32,22 @@ async function onPageStart() {
         console.log(dataMoviesPopular);
         // console.log(dataGenresList);
         // console.log(dataGenres);
+        if (dataMoviesPopular.total_pages < 2) {
+            btnLoadMoreRemove();
+            btnLoadPrevRemove();
+        } else if (dataMoviesPopular.page === 1 && dataMoviesPopular.page < dataMoviesPopular.total_pages) {
+            btnLoadMoreAdd();
+            btnLoadPrevRemove();
+        } else if (dataMoviesPopular.page !== 1 && dataMoviesPopular.page === dataMoviesPopular.total_pages) {
+            btnLoadMoreRemove();
+            btnLoadPrevAdd();
+        } else {
+            btnLoadMoreAdd();
+            btnLoadPrevAdd();
+        };
 
         galleryCollectionCreate(dataMoviesPop, dataGenres);
+
     } catch (error) {
         errorCatch(error);
     };
