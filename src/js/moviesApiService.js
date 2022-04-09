@@ -1,6 +1,7 @@
 import axios from "axios";
 import Notiflix from 'notiflix';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
+import { popularMoviesLoad, searchMoviesLoad } from './index.js'
 
 export default class MoviesApiService {
     constructor() {
@@ -10,14 +11,17 @@ export default class MoviesApiService {
         this.API_KEY = '?api_key=0fd7f514ed7f6fbeb459b215007787ac';
         // параметры настроек (выборки) запроса
         this.popular = "/trending/movie/week";
+        this.query = "/search/movie"
         this.genre = "/genre/movie/list";
         this.lang = "language=en-US";
         this.imgLang = "include_image_language=en,null";
+        this.searchQuery = '';
         // this.image_type = "image_type=photo";
         // this.orientation = "orientation=horizontal";
         // this.safesearch = "safesearch=true";
         this.page = 1;
         this.totalPages = 10;
+        this.fetchMovies;
         // this.per_page = 40;
         // this.searchQuery = '';
     }
@@ -28,6 +32,19 @@ export default class MoviesApiService {
         const dataObject = await axios.get(`${this.BASE_URL}${this.popular}${this.API_KEY}&${searchParams}`); // запрос через библ. axios
         const { data } = dataObject;
         this.totalPages = dataObject.data.total_pages;
+        this.fetchMovies = popularMoviesLoad;
+        // console.log(data);
+        Loading.remove(); // библ. Notiflix
+        return data;
+    }
+
+    async fetchMoviesQuery() {
+        Loading.circle({onSearchFormSubmit: true, svgSize: '80px',}); // библ. Notiflix
+        const searchParams = `${this.lang}&${this.imgLang}&query=${this.searchQuery}&page=${this.page}`;
+        const dataObject = await axios.get(`${this.BASE_URL}${this.query}${this.API_KEY}&${searchParams}`); // запрос через библ. axios
+        const { data } = dataObject;
+        this.totalPages = dataObject.data.total_pages;
+        this.fetchMovies = searchMoviesLoad;
         // console.log(data);
         Loading.remove(); // библ. Notiflix
         return data;
