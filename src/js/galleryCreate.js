@@ -3,6 +3,8 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import { lightbox } from "./openLightbox.js";
 
+const BASE_POSTER_URL = "https://image.tmdb.org/t/p/w500/";
+
 function galleryCollectionCreate(data,dataGen) {
     elems.divGalleryEl.insertAdjacentHTML('beforeend',
         (data.map(({ genre_ids, id, poster_path, release_date, title }) => {
@@ -15,8 +17,8 @@ function galleryCollectionCreate(data,dataGen) {
             return `
                 
                     <div class="photo-card">
-                        <a href="https://image.tmdb.org/t/p/w500/${poster_path}" id="${id}">
-                            <img class="card" src="https://image.tmdb.org/t/p/w500/${poster_path}" alt="${title}" loading="lazy" />
+                        <a href="${BASE_POSTER_URL}${poster_path}" id="${id}">
+                            <img class="card" src="${BASE_POSTER_URL}${poster_path}" alt="${title}" loading="lazy" />
                         </a>
                         <div>
                             <h3 class="movieTitle">

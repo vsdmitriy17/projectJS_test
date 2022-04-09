@@ -2,14 +2,14 @@ import axios from "axios";
 import Notiflix from 'notiflix';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
 
-export default class ImgApiService {
+export default class MoviesApiService {
     constructor() {
         // путь к API - эндпоинт, базовый URL, точка входа в API.
         this.BASE_URL = 'https://api.themoviedb.org/3';
         // Ключ API
         this.API_KEY = '?api_key=0fd7f514ed7f6fbeb459b215007787ac';
         // параметры настроек (выборки) запроса
-        this.popular = "/movie/popular";
+        this.popular = "/trending/movie/week";
         this.genre = "/genre/movie/list";
         this.lang = "language=en-US";
         this.imgLang = "include_image_language=en,null";

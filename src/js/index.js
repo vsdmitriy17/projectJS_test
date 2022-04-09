@@ -8,7 +8,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import { elems } from "./elems.js";
 import { bgImageRemove, bgImageAdd } from "./bgImage.js"
 import { btnLoadMoreAdd, btnLoadMoreRemove, btnLoadPrevAdd, btnLoadPrevRemove } from "./btnLoadMore.js";
-import ImgApiService from "./ImgApiService.js";
+import MoviesApiService from "./moviesApiService.js";
 import { errorCatch } from "./errorCatch.js";
 import { lightbox } from "./openLightbox.js";
 import { galleryCollectionCreate, galleryClean } from "./galleryCreate.js";
@@ -19,14 +19,14 @@ import { notiflixOptions, notiflixReportOptions } from "./notiflixOptions.js";
 // elems.btnLoadPrevEl.addEventListener('click', onBtnLoadPrevClick);
 // elems.divGalleryEl.addEventListener('click', onGalleryCardClick);
 
-const imgApiService = new ImgApiService();
+const moviesApiService = new MoviesApiService();
 onPageStart();
 
 async function onPageStart() {
     galleryClean();
     try {
-        const dataMoviesPopular = await imgApiService.fetchMoviesPopular(); // данные из API по запросу "популярные фильмы" (объект - { page: 1, results: (20) […], total_pages: 33054, total_results: 661074 })
-        const dataGenresList = await imgApiService.fetchGenresList(); // данные из API по запросу "жанры" (объект - { genres: (19) […] })
+        const dataMoviesPopular = await moviesApiService.fetchMoviesPopular(); // данные из API по запросу "популярные фильмы" (объект - { page: 1, results: (20) […], total_pages: 33054, total_results: 661074 })
+        const dataGenresList = await moviesApiService.fetchGenresList(); // данные из API по запросу "жанры" (объект - { genres: (19) […] })
         const dataGenres = dataGenresList.genres; // массив объектов [{ id: 28, name: "Action" } ..... { id: 76, name: "Horor" }]
         const dataMoviesPop = dataMoviesPopular.results; // массив объектов фильмов [{ adult: false, backdrop_path: "/x747ZvF0CcYYTTpPRCoUrxA2cYy.jpg", id: 406759, … } ...]
         console.log(dataMoviesPopular);
@@ -148,4 +148,4 @@ async function onPageStart() {
 //     lightbox.open();
 // };
 
-export { imgApiService };
+export { moviesApiService };
