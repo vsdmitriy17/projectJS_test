@@ -7,22 +7,30 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 // элементы, классы, ф-ции
 import { elems } from "./elems.js";
 import { bgImageRemove, bgImageAdd } from "./bgImage.js"
-import { btnLoadMoreAdd, btnLoadMoreRemove, btnLoadPrevAdd, btnLoadPrevRemove } from "./btnLoadMore.js";
+import { btnLoadNextAdd, btnLoadNextRemove, btnLoadPrevAdd, btnLoadPrevRemove } from "./btnLoadMore.js";
 import MoviesApiService from "./moviesApiService.js";
 import { errorCatch } from "./errorCatch.js";
 import { lightbox } from "./openLightbox.js";
 import { galleryCollectionCreate, galleryClean } from "./galleryCreate.js";
 import { notiflixOptions, notiflixReportOptions } from "./notiflixOptions.js";
 
+const moviesApiService = new MoviesApiService();
+popularMoviesLoad();
+// const moviesPagination = new Pagination({
+//     initialPage: moviesApiService.page,
+//     maxPages: moviesApiService.totalPages,
+//     onPageChange(value) {
+//         console.log(value);
+//     },
+// });
+// moviesPagination.nextPage();
+
 // elems.formEl.addEventListener('submit', onSearchFormSubmit);
-// elems.btnLoadMoreEl.addEventListener('click', onBtnLoadMoreClick);
-// elems.btnLoadPrevEl.addEventListener('click', onBtnLoadPrevClick);
+elems.btnLoadNextEl.addEventListener('click', onBtnLoadNextClick);
+elems.btnLoadPrevEl.addEventListener('click', onBtnLoadPrevClick);
 // elems.divGalleryEl.addEventListener('click', onGalleryCardClick);
 
-const moviesApiService = new MoviesApiService();
-onPageStart();
-
-async function onPageStart() {
+async function popularMoviesLoad() {
     galleryClean();
     try {
         const dataMoviesPopular = await moviesApiService.fetchMoviesPopular(); // данные из API по запросу "популярные фильмы" (объект - { page: 1, results: (20) […], total_pages: 33054, total_results: 661074 })
@@ -34,16 +42,16 @@ async function onPageStart() {
         console.log(dataGenres);
 
         if (dataMoviesPopular.total_pages < 2) {
-            btnLoadMoreRemove();
+            btnLoadNextRemove();
             btnLoadPrevRemove();
         } else if (dataMoviesPopular.page === 1 && dataMoviesPopular.page < dataMoviesPopular.total_pages) {
-            btnLoadMoreAdd();
+            btnLoadNextAdd();
             btnLoadPrevRemove();
         } else if (dataMoviesPopular.page !== 1 && dataMoviesPopular.page === dataMoviesPopular.total_pages) {
-            btnLoadMoreRemove();
+            btnLoadNextRemove();
             btnLoadPrevAdd();
         } else {
-            btnLoadMoreAdd();
+            btnLoadNextAdd();
             btnLoadPrevAdd();
         };
 
@@ -54,7 +62,19 @@ async function onPageStart() {
     };
 };
 
+async function onBtnLoadNextClick(evt) {
+    moviesApiService.nextPage();
+    console.log(moviesApiService.page);
+    popularMoviesLoad();
+    elems.currentPageEl.textContent = moviesApiService.page;
+}
 
+async function onBtnLoadPrevClick(evt) {
+    moviesApiService.prevPage();
+    console.log(moviesApiService.page);
+    popularMoviesLoad();
+    elems.currentPageEl.textContent = moviesApiService.page;
+}
 
 
 

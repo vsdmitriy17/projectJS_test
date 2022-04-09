@@ -17,17 +17,18 @@ export default class MoviesApiService {
         // this.orientation = "orientation=horizontal";
         // this.safesearch = "safesearch=true";
         this.page = 1;
+        this.totalPages = 10;
         // this.per_page = 40;
         // this.searchQuery = '';
     }
 
     async fetchMoviesPopular() {
         Loading.circle({onSearchFormSubmit: true, svgSize: '80px',}); // библ. Notiflix
-        const searchParams = `${this.lang}&${this.imgLang}&${this.page}`;
+        const searchParams = `${this.lang}&${this.imgLang}&page=${this.page}`;
         const dataObject = await axios.get(`${this.BASE_URL}${this.popular}${this.API_KEY}&${searchParams}`); // запрос через библ. axios
         const { data } = dataObject;
+        this.totalPages = dataObject.data.total_pages;
         // console.log(data);
-        this.page += 1; //увеличиваем номер стр. при каждом запросе
         Loading.remove(); // библ. Notiflix
         return data;
     }
@@ -38,6 +39,20 @@ export default class MoviesApiService {
         const { data } = dataObject;
         // console.log(data);
         return data;
+    }
+
+    nextPage() {
+        if (this.page === this.totalPages) {
+            return;
+        };
+        this.page += 1;
+    }
+
+    prevPage() {
+        if (this.page === 1) {
+            return;
+        };
+        this.page -= 1;
     }
     
     // get query() {

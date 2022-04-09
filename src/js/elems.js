@@ -5,8 +5,9 @@ const elems = {
     inputEl: document.querySelector('.form__input'),
     btnSearchEl: document.querySelector('.form__btn'),
     divGalleryEl: document.querySelector('.gallery'),
-    btnLoadMoreEl: document.querySelector('.load-more'),
+    btnLoadNextEl: document.querySelector('.load-more'),
     btnLoadPrevEl: document.querySelector('.load-prev'),
+    currentPageEl: document.querySelector('.page'),
 };
 
 export { elems }

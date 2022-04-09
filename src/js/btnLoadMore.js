@@ -1,15 +1,15 @@
 import { elems } from "./elems.js";
 
-function btnLoadMoreAdd() {
-    if (elems.btnLoadMoreEl.classList.contains('displayNone')) {
-        elems.btnLoadMoreEl.classList.remove('displayNone');
+function btnLoadNextAdd() {
+    if (elems.btnLoadNextEl.classList.contains('displayNone')) {
+        elems.btnLoadNextEl.classList.remove('displayNone');
     }
     return;
 };
 
-function btnLoadMoreRemove() {
-    if (!elems.btnLoadMoreEl.classList.contains('displayNone')) {
-        elems.btnLoadMoreEl.classList.add('displayNone');
+function btnLoadNextRemove() {
+    if (!elems.btnLoadNextEl.classList.contains('displayNone')) {
+        elems.btnLoadNextEl.classList.add('displayNone');
     }
     return;
 };
@@ -28,4 +28,4 @@ function btnLoadPrevRemove() {
     return;
 };
 
-export { btnLoadMoreAdd, btnLoadMoreRemove, btnLoadPrevAdd, btnLoadPrevRemove };
+export { btnLoadNextAdd, btnLoadNextRemove, btnLoadPrevAdd, btnLoadPrevRemove };
