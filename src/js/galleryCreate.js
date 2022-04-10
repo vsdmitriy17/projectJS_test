@@ -1,7 +1,4 @@
 import { elems } from "./elems.js";
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
-import { lightbox } from "./openLightbox.js";
 
 const BASE_POSTER_URL = "https://image.tmdb.org/t/p/w500/";
 
@@ -16,11 +13,11 @@ function galleryCollectionCreate(data,dataGen) {
             const genres = ganresArrey.join(', ');
             return `
                 
-                    <div class="photo-card">
-                        <a href="${BASE_POSTER_URL}${poster_path}" id="${id}">
+                    <li class="photo-card" data-id="${id}">
+                        <a href="">
                             <img class="card" src="${BASE_POSTER_URL}${poster_path}" alt="${title}" loading="lazy" />
                         </a>
-                        <div>
+                        <div class="card-title">
                             <h3 class="movieTitle">
                                 ${title}
                             </h3>
@@ -34,10 +31,9 @@ function galleryCollectionCreate(data,dataGen) {
                                 </p>
                             </div>
                         </div>
-                    </div>
+                    </li>
                 `;
         }).join('')));
-    lightbox.refresh();
 };
 
 function galleryClean() {

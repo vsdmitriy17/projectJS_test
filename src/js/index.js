@@ -2,16 +2,13 @@ import '../sass/main.scss';
 //Библиотеки Notiflix, SimpleLightbox
 import Notiflix from 'notiflix';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
 // элементы, классы, ф-ции
 import { elems } from "./elems.js";
-import { bgImageRemove, bgImageAdd } from "./bgImage.js"
 import { btnLoadNextAdd, btnLoadNextRemove, btnLoadPrevAdd, btnLoadPrevRemove } from "./btnLoadMore.js";
 import MoviesApiService from "./moviesApiService.js";
 import { errorCatch } from "./errorCatch.js";
-import { lightbox } from "./openLightbox.js";
 import { galleryCollectionCreate, galleryClean } from "./galleryCreate.js";
+import { movieCardCreate } from "./movieCardCreate.js";
 import { notiflixOptions, notiflixReportOptions } from "./notiflixOptions.js";
 
 const moviesApiService = new MoviesApiService();
@@ -20,7 +17,7 @@ popularMoviesLoad();
 elems.formEl.addEventListener('submit', onSearchFormSubmit);
 elems.btnLoadNextEl.addEventListener('click', onBtnLoadNextClick);
 elems.btnLoadPrevEl.addEventListener('click', onBtnLoadPrevClick);
-// elems.divGalleryEl.addEventListener('click', onGalleryCardClick);
+elems.divGalleryEl.addEventListener('click', onGalleryCardClick);
 
 async function popularMoviesLoad() {
     galleryClean();
@@ -87,6 +84,24 @@ async function searchMoviesLoad() {
     };
 }
 
+async function idMovieLoad() {
+    
+    galleryClean();
+
+    try {
+        const dataObj = await moviesApiService.fetchMovieId();
+        console.log(dataObj);
+
+        btnLoadPrevRemove();
+        btnLoadNextRemove();
+
+        movieCardCreate(dataObj);
+        
+    } catch (error) {
+        errorCatch(error);
+    };
+}
+
 async function onSearchFormSubmit(evt) {
     evt.preventDefault();
     const name = elems.inputEl.value.trim(); // текущее значение inputEl (текст введенный в inputEl), с игнорированием пробелов (trim())
@@ -104,6 +119,19 @@ async function onSearchFormSubmit(evt) {
         errorCatch(error);
     };
 };
+
+async function onGalleryCardClick(evt) {
+    if (!evt.target.classList.contains('photo-card')) {
+        return;
+    }
+    
+    moviesApiService.movie_id = evt.target.dataset.id;
+    idMovieLoad();
+
+    // console.log(evt.target.nodeName);
+    console.log("ID=", moviesApiService.movie_id);
+
+}
 
 async function onBtnLoadNextClick(evt) {
     moviesApiService.nextPage();

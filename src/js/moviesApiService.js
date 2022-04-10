@@ -12,10 +12,12 @@ export default class MoviesApiService {
         // параметры настроек (выборки) запроса
         this.popular = "/trending/movie/week";
         this.query = "/search/movie"
+        this.movieId = '/movie/';
         this.genre = "/genre/movie/list";
         this.lang = "language=en-US";
         this.imgLang = "include_image_language=en,null";
         this.searchQuery = '';
+        this.movie_id = '';
         // this.image_type = "image_type=photo";
         // this.orientation = "orientation=horizontal";
         // this.safesearch = "safesearch=true";
@@ -45,6 +47,18 @@ export default class MoviesApiService {
         const { data } = dataObject;
         this.totalPages = dataObject.data.total_pages;
         this.fetchMovies = searchMoviesLoad;
+        // console.log(data);
+        Loading.remove(); // библ. Notiflix
+        return data;
+    }
+
+    async fetchMovieId() {
+        Loading.circle({onSearchFormSubmit: true, svgSize: '80px',}); // библ. Notiflix
+        const searchParams = `${this.lang}&${this.imgLang}`;
+        const dataObject = await axios.get(`${this.BASE_URL}${this.movieId}${this.movie_id}${this.API_KEY}&${searchParams}`); // запрос через библ. axios
+        const { data } = dataObject;
+        this.totalPages = dataObject.data.total_pages;
+        // this.fetchMovies = fetchMovieId;
         // console.log(data);
         Loading.remove(); // библ. Notiflix
         return data;
