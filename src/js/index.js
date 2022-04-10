@@ -80,6 +80,10 @@ async function searchMoviesLoad() {
         };
 
         galleryCollectionCreate(dataMovies, dataGenres);
+
+        if (dataMovies.length === 0) {
+            return Notiflix.Notify.success('Sorry, there are no movies matching your search query. Please try again.');  
+        };
         
     } catch (error) {
         errorCatch(error);

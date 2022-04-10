@@ -3,12 +3,12 @@ import Notiflix from 'notiflix';
 // Объект настроек библиотеки Notiflix.Notify
 const notiflixOptions = Notiflix.Notify.init({
   width: '500px',
-  position: 'right-top', // 'right-top' - 'right-bottom' - 'left-top' - 'left-bottom' - 'center-top' - 'center-bottom' - 'center-center'
+  position: 'center-center', // 'right-top' - 'right-bottom' - 'left-top' - 'left-bottom' - 'center-top' - 'center-bottom' - 'center-center'
   distance: '10px',
   opacity: 1,
   borderRadius: '5px',
   rtl: false,
-  timeout: 4000,
+  timeout: 4500,
   messageMaxLength: 110,
   backOverlay: false,
   backOverlayColor: 'rgba(0,0,0,0.5)',
@@ -32,7 +32,7 @@ const notiflixOptions = Notiflix.Notify.init({
   fontAwesomeIconSize: '34px',
 
   success: {
-    background: '#32c682',
+    background: 'rgb(142, 142, 235)',
     textColor: '#fff',
     childClassName: 'notiflix-notify-success',
     notiflixIconColor: 'rgba(0,0,0,0.2)',
