@@ -8,7 +8,8 @@ import { btnLoadNextAdd, btnLoadNextRemove, btnLoadPrevAdd, btnLoadPrevRemove } 
 import MoviesApiService from "./moviesApiService.js";
 import { errorCatch } from "./errorCatch.js";
 import { galleryCollectionCreate, galleryClean } from "./galleryCreate.js";
-import { movieCardCreate } from "./movieCardCreate.js";
+import { toggleModal } from "./modal.js"
+import { movieCardCreate, movieCardClean } from "./movieCardCreate.js";
 import { notiflixOptions, notiflixReportOptions } from "./notiflixOptions.js";
 
 const moviesApiService = new MoviesApiService();
@@ -18,6 +19,7 @@ elems.formEl.addEventListener('submit', onSearchFormSubmit);
 elems.btnLoadNextEl.addEventListener('click', onBtnLoadNextClick);
 elems.btnLoadPrevEl.addEventListener('click', onBtnLoadPrevClick);
 elems.divGalleryEl.addEventListener('click', onGalleryCardClick);
+elems.closeModalBtn.addEventListener('click', toggleModal);
 
 async function popularMoviesLoad() {
     galleryClean();
@@ -85,8 +87,8 @@ async function searchMoviesLoad() {
 }
 
 async function idMovieLoad() {
-    
-    galleryClean();
+    toggleModal();
+    movieCardClean();
 
     try {
         const dataObj = await moviesApiService.fetchMovieId();

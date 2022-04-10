@@ -56,7 +56,11 @@ function movieCardCreate(data) {
                         </div>
                     </div>
                 `;
-    elems.divGalleryEl.insertAdjacentHTML('beforeend', cardString)
+    elems.modalMovieCard.insertAdjacentHTML('beforeend', cardString)
 };
 
-export { movieCardCreate };
+function movieCardClean() {
+    elems.modalMovieCard.innerHTML = '';
+};
+
+export { movieCardCreate, movieCardClean };

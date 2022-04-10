@@ -8,6 +8,10 @@ const elems = {
     btnLoadNextEl: document.querySelector('.load-more'),
     btnLoadPrevEl: document.querySelector('.load-prev'),
     currentPageEl: document.querySelector('.page'),
+    openModalBtn: document.querySelector('[data-modal-open]'),
+    closeModalBtn: document.querySelector('[data-modal-close]'),
+    modal: document.querySelector('[data-modal]'),
+    modalMovieCard: document.querySelector('.movieModal'),
 };
 
 export { elems }

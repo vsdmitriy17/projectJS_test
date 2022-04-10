@@ -285,7 +285,7 @@
 }
 
 .cardId {
-    width: 100%;
+    max-width: 300px;
 }
 
 .movieCardId {
@@ -345,8 +345,8 @@
     margin-right: 20px;
     
     max-width: 300px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
     height: 35px;
     border: transparent;
     border-radius: 5px;
@@ -354,12 +354,104 @@
     background-color: rgb(79, 79, 189);
     cursor: pointer;
     
-    @include font(white, 700, 14px, 1.88, 0.06em);
+    @include font(white, 700, 12px, 1.88, 0.06em);
     
     transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
     
     &:hover,
     &:focus {
         background-color: #2a2191;
+    }
+}
+
+/* --------------------OVERLAY---------------------- */
+.backdrop {
+    /*overlay модального окна*/
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 19;
+
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding-left: 3vw;
+    padding-right: 3vw;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --СКРЫВАЕТ МОДАЛЬНОЕ ОКНО И OVERLAY, В НЕ АКТИВНОМ СОСТОЯНИИ-- */
+.backdrop.is-hidden {
+    /*Скрывает модальное окно*/
+    opacity: 0;
+    pointer-events: none;
+    /*позволяет производить действия через слой модального окна*/
+    visibility: hidden;
+
+    & .modal {
+        transform: scale(0.5);
+    }
+}
+
+/* -------------------- Модальное окно--------------------- */
+.modal {
+    /*модальное окно*/
+    position: relative;
+    /*left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1);*/
+    /*Позиционирование модального окна по центру, относительно backdrop*/
+    z-index: 20;
+    transform: scale(1);
+
+    border-radius: 4px;
+    box-shadow: 0px 2px 1px 0px #00000033,0px 1px 1px 0px #00000024,0px 1px 3px 0px #0000001F;
+    background-color: rgb(229, 229, 240);
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-top: 40px;
+
+    transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+
+        max-width: 800px;
+        min-height: 500px;
+}
+
+.modal__button {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    height: 30px;
+    width: 30px;
+    background-color: transparent;
+    border-radius: 50%;
+    border-color: rgba(0, 0, 0, 0.1);
+    border-width: 1px;
+    border-style: solid;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.modal__icon-btn {
+    width: 18px;
+    height: 18px;
+    fill: black;
+
+    transition: fill 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    .modal__button:hover &,
+    .modal__button:focus & {
+        fill: rgb(79, 79, 189);
     }
 }
