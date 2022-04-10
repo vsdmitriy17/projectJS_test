@@ -96,10 +96,7 @@ async function idMovieLoad() {
 
     try {
         const dataObj = await moviesApiService.fetchMovieId();
-        console.log(dataObj);
-
-        btnLoadPrevRemove();
-        btnLoadNextRemove();
+        // console.log(dataObj);
 
         movieCardCreate(dataObj);
         

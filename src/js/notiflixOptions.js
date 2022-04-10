@@ -32,7 +32,7 @@ const notiflixOptions = Notiflix.Notify.init({
   fontAwesomeIconSize: '34px',
 
   success: {
-    background: 'rgb(142, 142, 235)',
+    background: 'rgb(79, 79, 189)',
     textColor: '#fff',
     childClassName: 'notiflix-notify-success',
     notiflixIconColor: 'rgba(0,0,0,0.2)',
