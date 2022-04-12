@@ -12,6 +12,10 @@ import { toggleModal } from "./modal.js"
 import { movieCardCreate, movieCardClean } from "./movieCardCreate.js";
 import { notiflixOptions, notiflixReportOptions } from "./notiflixOptions.js";
 
+const idStorage = {
+        watched: [],
+        hell: [],
+    };
 const moviesApiService = new MoviesApiService();
 popularMoviesLoad();
 
@@ -20,6 +24,12 @@ elems.btnLoadNextEl.addEventListener('click', onBtnLoadNextClick);
 elems.btnLoadPrevEl.addEventListener('click', onBtnLoadPrevClick);
 elems.divGalleryEl.addEventListener('click', onGalleryCardClick);
 elems.closeModalBtn.addEventListener('click', toggleModal);
+elems.addToWatchedBtn.addEventListener('click', onAddToWatchClick);
+elems.addToHellBtn.addEventListener('click', onAddToHellClick);
+elems.homeBtnEl.addEventListener('click', onHomeBtnClick);
+elems.watchedBtnEl.addEventListener('click', onWatchedBtnClick);
+elems.hellBtnEl.addEventListener('click', onHellBtnClick);
+
 
 async function popularMoviesLoad() {
     galleryClean();
@@ -28,7 +38,7 @@ async function popularMoviesLoad() {
         const dataGenresList = await moviesApiService.fetchGenresList(); // данные из API по запросу "жанры" (объект - { genres: (19) […] })
         const dataGenres = dataGenresList.genres; // массив объектов [{ id: 28, name: "Action" } ..... { id: 76, name: "Horor" }]
         const dataMoviesPop = dataMoviesPopular.results; // массив объектов фильмов [{ adult: false, backdrop_path: "/x747ZvF0CcYYTTpPRCoUrxA2cYy.jpg", id: 406759, … } ...]
-        // console.log(dataMoviesPopular);
+        // console.log(dataMoviesPop);
         // console.log(dataGenresList);
         // console.log(dataGenres);
 
@@ -127,7 +137,11 @@ async function onGalleryCardClick(evt) {
     if (!evt.target.classList.contains('photo-card')) {
         return;
     }
-    
+    elems.addToWatchedBtn.disabled = false;
+    elems.addToWatchedBtn.textContent = "ADD TO WATCHED";
+    elems.addToHellBtn.textContent = "ADD TO HELL";
+    elems.addToHellBtn.disabled = false;
+
     moviesApiService.movie_id = evt.target.dataset.id;
     idMovieLoad();
 
@@ -150,4 +164,116 @@ async function onBtnLoadPrevClick(evt) {
     elems.currentPageEl.textContent = moviesApiService.page;
 }
 
-export { moviesApiService, popularMoviesLoad, searchMoviesLoad };
+function onAddToWatchClick(evt) {
+    const movieIdCard = document.querySelector('.movieId');
+    const savedData = localStorage.getItem('saved-data');
+    if (!savedData) {
+        const idStorage = {
+            watched: [],
+            hell: [],
+        };
+
+        idStorage.watched.push(movieIdCard.dataset.id);
+        localStorage.setItem('saved-data', JSON.stringify(idStorage));
+        elems.addToWatchedBtn.textContent = "ADDED TO WATCH";
+        elems.addToWatchedBtn.disabled = true;
+    } else {
+        const newDataId = movieIdCard.dataset.id;
+        const data = JSON.parse(savedData);
+        if (data.watched.some(value => value === newDataId)) {
+            elems.addToWatchedBtn.textContent = "ADDED TO WATCH";
+            elems.addToWatchedBtn.disabled = true;
+            return;
+        };
+        data.watched.push(newDataId);
+        localStorage.setItem('saved-data', JSON.stringify(data));
+        elems.addToWatchedBtn.textContent = "ADDED TO WATCH";
+        elems.addToWatchedBtn.disabled = true;
+    }
+}
+
+function onAddToHellClick(evt) {
+    const movieIdCard = document.querySelector('.movieId');
+    const savedData = localStorage.getItem('saved-data');
+    if (!savedData) {
+        const idStorage = {
+            watched: [],
+            hell: [],
+        };
+
+        idStorage.hell.push(movieIdCard.dataset.id);
+        localStorage.setItem('saved-data', JSON.stringify(idStorage));
+        elems.addToHellBtn.textContent = "ADDED TO HELL";
+        elems.addToHellBtn.disabled = true;
+    } else {
+        const newDataId = movieIdCard.dataset.id;
+        const data = JSON.parse(savedData);
+        if (data.hell.some(value => value === newDataId)) {
+            elems.addToHellBtn.textContent = "ADDED TO HELL";
+            elems.addToHellBtn.disabled = true;
+            return;
+        };
+        data.hell.push(newDataId);
+        localStorage.setItem('saved-data', JSON.stringify(data));
+        elems.addToHellBtn.textContent = "ADDED TO HELL";
+        elems.addToHellBtn.disabled = true;
+    }
+}
+
+function onHomeBtnClick(evt) {
+    popularMoviesLoad();
+}
+
+async function onWatchedBtnClick(evt) {
+
+}
+
+async function storageMoviesLoad() {
+    const savedData = localStorage.getItem('saved-data');
+    if (!savedData) {
+        Notiflix.Notify.success('Sorry, there are no added movies.');
+        return;
+    } else if (JSON.parse(savedData).watched.length === 0) {
+        Notiflix.Notify.success('Sorry, there are no added movies.');
+        return;
+    }; 
+
+    galleryClean();
+
+    const moviesIdString = JSON.parse(savedData).watched.join(",");
+
+    try {
+        const dataMoviesPopular = await moviesApiService.fetchMoviesQuery(); // данные из API по запросу "популярные фильмы" (объект - { page: 1, results: (20) […], total_pages: 33054, total_results: 661074 })
+        // const dataGenresList = await moviesApiService.fetchGenresList(); // данные из API по запросу "жанры" (объект - { genres: (19) […] })
+        // const dataGenres = dataGenresList.genres; // массив объектов [{ id: 28, name: "Action" } ..... { id: 76, name: "Horor" }]
+        const dataMoviesPop = dataMoviesPopular.results; // массив объектов фильмов [{ adult: false, backdrop_path: "/x747ZvF0CcYYTTpPRCoUrxA2cYy.jpg", id: 406759, … } ...]
+        // console.log(dataMoviesPop);
+        // console.log(dataGenresList);
+        // console.log(dataGenres);
+
+        if (dataMoviesPopular.total_pages < 2) {
+            btnLoadNextRemove();
+            btnLoadPrevRemove();
+        } else if (dataMoviesPopular.page === 1 && dataMoviesPopular.page < dataMoviesPopular.total_pages) {
+            btnLoadNextAdd();
+            btnLoadPrevRemove();
+        } else if (dataMoviesPopular.page !== 1 && dataMoviesPopular.page === dataMoviesPopular.total_pages) {
+            btnLoadNextRemove();
+            btnLoadPrevAdd();
+        } else {
+            btnLoadNextAdd();
+            btnLoadPrevAdd();
+        };
+
+        galleryCollectionCreate(dataMoviesPop, dataGenres);
+
+    } catch (error) {
+        errorCatch(error);
+    };
+}
+
+function onHellBtnClick(evt) {
+
+}
+
+export { moviesApiService, popularMoviesLoad, searchMoviesLoad, storageMoviesLoad };

@@ -12,6 +12,11 @@ const elems = {
     closeModalBtn: document.querySelector('[data-modal-close]'),
     modal: document.querySelector('[data-modal]'),
     modalMovieCard: document.querySelector('.movieModal'),
+    addToWatchedBtn: document.querySelector('.movieWatchedBtn'),
+    addToHellBtn: document.querySelector('.movieHellBtn'),
+    homeBtnEl: document.querySelector('.homeBtn'),
+    watchedBtnEl: document.querySelector('.watchedbtn'),
+    hellBtnEl: document.querySelector('.hellBtn'),
 };
 
 export { elems }

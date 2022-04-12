@@ -1,7 +1,7 @@
 import axios from "axios";
 import Notiflix from 'notiflix';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
-import { popularMoviesLoad, searchMoviesLoad } from './index.js'
+import { popularMoviesLoad, searchMoviesLoad, storageMoviesLoad } from './index.js'
 
 export default class MoviesApiService {
     constructor() {
@@ -59,6 +59,18 @@ export default class MoviesApiService {
         const { data } = dataObject;
         this.totalPages = dataObject.data.total_pages;
         // this.fetchMovies = fetchMovieId;
+        // console.log(data);
+        Loading.remove(); // библ. Notiflix
+        return data;
+    }
+
+    async fetchMoviesStorage() {
+        Loading.circle({onSearchFormSubmit: true, svgSize: '80px',}); // библ. Notiflix
+        const searchParams = `${this.lang}&${this.imgLang}&page=${this.page}`;
+        const dataObject = await axios.get(`${this.BASE_URL}${this.movieId}${this.movie_id}${this.API_KEY}&${searchParams}`); // запрос через библ. axios
+        const { data } = dataObject;
+        this.totalPages = dataObject.data.total_pages;
+        this.fetchMovies = StorageMoviesLoad;
         // console.log(data);
         Loading.remove(); // библ. Notiflix
         return data;

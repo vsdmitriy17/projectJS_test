@@ -49,14 +49,11 @@ function movieCardCreate(data) {
                                     ${overview}
                                 </p>
                             </div>
-                            <div class="movieCardBtn">
-                                <button type="button" class="movieBtn">ADD TO WATCHED</button>
-                                <button type="button" class="movieBtn">ADD TO HELL</button>
-                            </div>
+                            
                         </div>
                     </div>
                 `;
-    elems.modalMovieCard.insertAdjacentHTML('beforeend', cardString)
+    elems.modalMovieCard.insertAdjacentHTML('afterbegin', cardString)
 };
 
 function movieCardClean() {
