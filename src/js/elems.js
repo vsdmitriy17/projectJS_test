@@ -16,7 +16,7 @@ const elems = {
     addToHellBtn: document.querySelector('.movieHellBtn'),
     homeBtnEl: document.querySelector('.homeBtn'),
     watchedBtnEl: document.querySelector('.watchedbtn'),
-    hellBtnEl: document.querySelector('.hellBtn'),
+    hellBtnEl: document.querySelector('.hellbtn'),
 };
 
 export { elems }

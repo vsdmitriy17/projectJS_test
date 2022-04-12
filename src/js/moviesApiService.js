@@ -13,6 +13,7 @@ export default class MoviesApiService {
         this.popular = "/trending/movie/week";
         this.query = "/search/movie"
         this.movieId = '/movie/';
+        this.findId = '/find/';
         this.genre = "/genre/movie/list";
         this.lang = "language=en-US";
         this.imgLang = "include_image_language=en,null";
@@ -66,11 +67,11 @@ export default class MoviesApiService {
 
     async fetchMoviesStorage() {
         Loading.circle({onSearchFormSubmit: true, svgSize: '80px',}); // библ. Notiflix
-        const searchParams = `${this.lang}&${this.imgLang}&page=${this.page}`;
-        const dataObject = await axios.get(`${this.BASE_URL}${this.movieId}${this.movie_id}${this.API_KEY}&${searchParams}`); // запрос через библ. axios
+        const searchParams = `${this.lang}&${this.imgLang}&id=${this.movie_id}&page=${this.page}`;
+        const dataObject = await axios.get(`${this.BASE_URL}${this.query}${this.API_KEY}&${searchParams}`); // запрос через библ. axios
         const { data } = dataObject;
         this.totalPages = dataObject.data.total_pages;
-        this.fetchMovies = StorageMoviesLoad;
+        this.fetchMovies = storageMoviesLoad;
         // console.log(data);
         Loading.remove(); // библ. Notiflix
         return data;
