@@ -25,12 +25,20 @@ export default class MoviesApiService {
         this.page = 1;
         this.totalPages = 10;
         this.fetchMovies;
+        this.dataStorageObj = {
+            movieId_card: '',
+            moviePoster: '',
+            movieTitle: '',
+            movieGenres: '',
+            movieRelease_date: '',
+            movieOverview: '',
+        };
         // this.per_page = 40;
         // this.searchQuery = '';
     }
 
     async fetchMoviesPopular() {
-        Loading.circle({onSearchFormSubmit: true, svgSize: '80px',}); // библ. Notiflix
+        Loading.circle({ onSearchFormSubmit: true, svgSize: '80px', }); // библ. Notiflix
         const searchParams = `${this.lang}&${this.imgLang}&page=${this.page}`;
         const dataObject = await axios.get(`${this.BASE_URL}${this.popular}${this.API_KEY}&${searchParams}`); // запрос через библ. axios
         const { data } = dataObject;
@@ -42,7 +50,7 @@ export default class MoviesApiService {
     }
 
     async fetchMoviesQuery() {
-        Loading.circle({onSearchFormSubmit: true, svgSize: '80px',}); // библ. Notiflix
+        Loading.circle({ onSearchFormSubmit: true, svgSize: '80px', }); // библ. Notiflix
         const searchParams = `${this.lang}&${this.imgLang}&query=${this.searchQuery}&page=${this.page}`;
         const dataObject = await axios.get(`${this.BASE_URL}${this.query}${this.API_KEY}&${searchParams}`); // запрос через библ. axios
         const { data } = dataObject;
@@ -54,24 +62,17 @@ export default class MoviesApiService {
     }
 
     async fetchMovieId() {
-        Loading.circle({onSearchFormSubmit: true, svgSize: '80px',}); // библ. Notiflix
+        Loading.circle({ onSearchFormSubmit: true, svgSize: '80px', }); // библ. Notiflix
         const searchParams = `${this.lang}&${this.imgLang}`;
         const dataObject = await axios.get(`${this.BASE_URL}${this.movieId}${this.movie_id}${this.API_KEY}&${searchParams}`); // запрос через библ. axios
         const { data } = dataObject;
         this.totalPages = dataObject.data.total_pages;
-        // this.fetchMovies = fetchMovieId;
-        // console.log(data);
-        Loading.remove(); // библ. Notiflix
-        return data;
-    }
-
-    async fetchMoviesStorage() {
-        Loading.circle({onSearchFormSubmit: true, svgSize: '80px',}); // библ. Notiflix
-        const searchParams = `${this.lang}&${this.imgLang}&id=${this.movie_id}&page=${this.page}`;
-        const dataObject = await axios.get(`${this.BASE_URL}${this.query}${this.API_KEY}&${searchParams}`); // запрос через библ. axios
-        const { data } = dataObject;
-        this.totalPages = dataObject.data.total_pages;
-        this.fetchMovies = storageMoviesLoad;
+        this.dataStorageObj.movieId_card = data.id;
+        this.dataStorageObj.moviePoster = data.poster_path;
+        this.dataStorageObj.movieTitle = data.title;
+        this.dataStorageObj.movieGenres = data.genres.map((genre) => {return genre.name;}).join(', ');
+        this.dataStorageObj.movieRelease_date = data.release_date.slice(0, 4);
+        this.dataStorageObj.movieOverview = data.overview;
         // console.log(data);
         Loading.remove(); // библ. Notiflix
         return data;
@@ -98,11 +99,11 @@ export default class MoviesApiService {
         };
         this.page -= 1;
     }
-    
+
     // get query() {
     //     return this.searchQuery;
     // }
-    
+
     // set query(newQuery) {
     //     this.searchQuery = newQuery;
     // }

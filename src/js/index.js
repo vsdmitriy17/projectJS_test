@@ -9,6 +9,7 @@ import MoviesApiService from "./moviesApiService.js";
 import { errorCatch } from "./errorCatch.js";
 import { galleryCollectionCreate, galleryClean } from "./galleryCreate.js";
 import { toggleModal } from "./modal.js"
+import { storageGalleryCreate } from "./starageGalleryCreate.js"
 import { movieCardCreate, movieCardClean } from "./movieCardCreate.js";
 import { notiflixOptions, notiflixReportOptions } from "./notiflixOptions.js";
 
@@ -107,6 +108,7 @@ async function idMovieLoad() {
     try {
         const dataObj = await moviesApiService.fetchMovieId();
         // console.log(dataObj);
+        // console.log(moviesApiService.dataStorageObj)
 
         movieCardCreate(dataObj);
         
@@ -165,7 +167,6 @@ async function onBtnLoadPrevClick(evt) {
 }
 
 function onAddToWatchClick(evt) {
-    const movieIdCard = document.querySelector('.movieId');
     const savedData = localStorage.getItem('saved-data');
     if (!savedData) {
         const idStorage = {
@@ -173,12 +174,12 @@ function onAddToWatchClick(evt) {
             hell: [],
         };
 
-        idStorage.watched.push(movieIdCard.dataset.id);
+        idStorage.watched.push(moviesApiService.dataStorageObj);
         localStorage.setItem('saved-data', JSON.stringify(idStorage));
         elems.addToWatchedBtn.textContent = "ADDED TO WATCH";
         elems.addToWatchedBtn.disabled = true;
     } else {
-        const newDataId = movieIdCard.dataset.id;
+        const newDataId = moviesApiService.dataStorageObj;
         const data = JSON.parse(savedData);
         if (data.watched.some(value => value === newDataId)) {
             elems.addToWatchedBtn.textContent = "ADDED TO WATCH";
@@ -193,7 +194,6 @@ function onAddToWatchClick(evt) {
 }
 
 function onAddToHellClick(evt) {
-    const movieIdCard = document.querySelector('.movieId');
     const savedData = localStorage.getItem('saved-data');
     if (!savedData) {
         const idStorage = {
@@ -201,12 +201,12 @@ function onAddToHellClick(evt) {
             hell: [],
         };
 
-        idStorage.hell.push(movieIdCard.dataset.id);
+        idStorage.hell.push(moviesApiService.dataStorageObj);
         localStorage.setItem('saved-data', JSON.stringify(idStorage));
         elems.addToHellBtn.textContent = "ADDED TO HELL";
         elems.addToHellBtn.disabled = true;
     } else {
-        const newDataId = movieIdCard.dataset.id;
+        const newDataId = moviesApiService.dataStorageObj;
         const data = JSON.parse(savedData);
         if (data.hell.some(value => value === newDataId)) {
             elems.addToHellBtn.textContent = "ADDED TO HELL";
@@ -225,10 +225,6 @@ function onHomeBtnClick(evt) {
 }
 
 function onWatchedBtnClick(evt) {
-    storageMoviesLoad()
-}
-
-async function storageMoviesLoad() {
     const savedData = localStorage.getItem('saved-data');
     if (!savedData) {
         Notiflix.Notify.success('Sorry, there are no added movies.');
@@ -238,44 +234,32 @@ async function storageMoviesLoad() {
         return;
     }; 
 
-    moviesApiService.movie_id = JSON.parse(savedData).watched.join(",");
-    console.log(moviesApiService.movie_id);
+    const dataArray = JSON.parse(savedData).watched;
+    // console.log(dataArray);
 
-    // galleryClean();
-
-    try {
-        const dataMoviesPopular = await moviesApiService.fetchMoviesStorage(); // данные из API по запросу "популярные фильмы" (объект - { page: 1, results: (20) […], total_pages: 33054, total_results: 661074 })
-        const dataGenresList = await moviesApiService.fetchGenresList(); // данные из API по запросу "жанры" (объект - { genres: (19) […] })
-        const dataGenres = dataGenresList.genres; // массив объектов [{ id: 28, name: "Action" } ..... { id: 76, name: "Horor" }]
-        const dataMoviesPop = dataMoviesPopular.results; // массив объектов фильмов [{ adult: false, backdrop_path: "/x747ZvF0CcYYTTpPRCoUrxA2cYy.jpg", id: 406759, … } ...]
-        console.log(dataMoviesPopular);
-        // console.log(dataGenresList);
-        // console.log(dataGenres);
-
-        // if (dataMoviesPopular.total_pages < 2) {
-        //     btnLoadNextRemove();
-        //     btnLoadPrevRemove();
-        // } else if (dataMoviesPopular.page === 1 && dataMoviesPopular.page < dataMoviesPopular.total_pages) {
-        //     btnLoadNextAdd();
-        //     btnLoadPrevRemove();
-        // } else if (dataMoviesPopular.page !== 1 && dataMoviesPopular.page === dataMoviesPopular.total_pages) {
-        //     btnLoadNextRemove();
-        //     btnLoadPrevAdd();
-        // } else {
-        //     btnLoadNextAdd();
-        //     btnLoadPrevAdd();
-        // };
-
-        // galleryCollectionCreate(dataMoviesPop, dataGenres);
-
-    } catch (error) {
-        errorCatch(error);
-    };
-
+    galleryClean();
+    storageGalleryCreate(dataArray);
+    btnLoadNextRemove();
+    btnLoadPrevRemove();
 }
 
 function onHellBtnClick(evt) {
+    const savedData = localStorage.getItem('saved-data');
+    if (!savedData) {
+        Notiflix.Notify.success('Sorry, there are no added movies.');
+        return;
+    } else if (JSON.parse(savedData).hell.length === 0) {
+        Notiflix.Notify.success('Sorry, there are no added movies.');
+        return;
+    }; 
 
+    const dataArray = JSON.parse(savedData).hell;
+    // console.log(dataArray);
+
+    galleryClean();
+    storageGalleryCreate(dataArray);
+    btnLoadNextRemove();
+    btnLoadPrevRemove();
 }
 
-export { moviesApiService, popularMoviesLoad, searchMoviesLoad, storageMoviesLoad };
+export { moviesApiService, popularMoviesLoad, searchMoviesLoad };
