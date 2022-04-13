@@ -150,25 +150,26 @@ async function onGalleryCardClick(evt) {
         };
     const newDataId = moviesApiService.dataStorageObj;
     const data = JSON.parse(savedData);
-    console.log(data.watched.some(value => value.movieId_card === newDataId.movieId_card));
-    console.log(data.watched);
-    console.log(newDataId);
     if (data.watched.some(value => value.movieId_card === newDataId.movieId_card)) {
         elems.addToWatchedBtn.textContent = "WATCHED";
+        elems.addToWatchedBtn.style.backgroundColor = "#c72121";
         elems.addToWatchedBtn.disabled = true;
         // return elems.addToWatchedBtn;
     } else {
         elems.addToWatchedBtn.disabled = false;
+        elems.addToWatchedBtn.style.backgroundColor = "#4f4fbd";
         elems.addToWatchedBtn.textContent = "ADD TO WATCHED";
         // return elems.addToWatchedBtn;
     };
 
     if (data.hell.some(value => value.movieId_card === newDataId.movieId_card)) {
         elems.addToHellBtn.textContent = "IN HELL";
+        elems.addToHellBtn.style.backgroundColor = "#c72121";
         elems.addToHellBtn.disabled = true;
         // return elems.addToHellBtn;
     } else {
         elems.addToHellBtn.textContent = "ADD TO HELL";
+        elems.addToHellBtn.style.backgroundColor = "#4f4fbd";
         elems.addToHellBtn.disabled = false;
         // return elems.addToHellBtn;
     };
@@ -202,18 +203,21 @@ function onAddToWatchClick(evt) {
         idStorage.watched.push(moviesApiService.dataStorageObj);
         localStorage.setItem('saved-data', JSON.stringify(idStorage));
         elems.addToWatchedBtn.textContent = "WATCHED";
+        elems.addToWatchedBtn.style.backgroundColor = "#c72121";
         elems.addToWatchedBtn.disabled = true;
     } else {
         const newDataId = moviesApiService.dataStorageObj;
         const data = JSON.parse(savedData);
         if (data.watched.some(value => value.movieId_card === newDataId.movieId_card)) {
             elems.addToWatchedBtn.textContent = " WATCHED";
+            elems.addToWatchedBtn.style.backgroundColor = "#c72121";
             elems.addToWatchedBtn.disabled = true;
             return;
         };
         data.watched.push(newDataId);
         localStorage.setItem('saved-data', JSON.stringify(data));
         elems.addToWatchedBtn.textContent = "WATCHED";
+        elems.addToWatchedBtn.style.backgroundColor = "#c72121";
         elems.addToWatchedBtn.disabled = true;
     }
 }
@@ -229,18 +233,21 @@ function onAddToHellClick(evt) {
         idStorage.hell.push(moviesApiService.dataStorageObj);
         localStorage.setItem('saved-data', JSON.stringify(idStorage));
         elems.addToHellBtn.textContent = "IN HELL";
+        elems.addToHellBtn.style.backgroundColor = "#c72121";
         elems.addToHellBtn.disabled = true;
     } else {
         const newDataId = moviesApiService.dataStorageObj;
         const data = JSON.parse(savedData);
         if (data.hell.some(value => value.movieId_card === newDataId.movieId_card)) {
             elems.addToHellBtn.textContent = "IN HELL";
+            elems.addToHellBtn.style.backgroundColor = "#c72121";
             elems.addToHellBtn.disabled = true;
             return;
         };
         data.hell.push(newDataId);
         localStorage.setItem('saved-data', JSON.stringify(data));
         elems.addToHellBtn.textContent = "IN HELL";
+        elems.addToHellBtn.style.backgroundColor = "#c72121";
         elems.addToHellBtn.disabled = true;
     }
 }
