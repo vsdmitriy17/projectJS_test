@@ -111,6 +111,7 @@ async function idMovieLoad() {
         // console.log(moviesApiService.dataStorageObj)
 
         movieCardCreate(dataObj);
+
         
     } catch (error) {
         errorCatch(error);
@@ -139,16 +140,40 @@ async function onGalleryCardClick(evt) {
     if (!evt.target.classList.contains('photo-card')) {
         return;
     }
-    elems.addToWatchedBtn.disabled = false;
-    elems.addToWatchedBtn.textContent = "ADD TO WATCHED";
-    elems.addToHellBtn.textContent = "ADD TO HELL";
-    elems.addToHellBtn.disabled = false;
 
     moviesApiService.movie_id = evt.target.dataset.id;
-    idMovieLoad();
+    await idMovieLoad();
 
-    // console.log(evt.target.nodeName);
-    console.log("ID=", moviesApiService.movie_id);
+    const savedData = localStorage.getItem('saved-data');
+    if (!savedData) {
+            return;
+        };
+    const newDataId = moviesApiService.dataStorageObj;
+    const data = JSON.parse(savedData);
+    console.log(data.watched.some(value => value.movieId_card === newDataId.movieId_card));
+    console.log(data.watched);
+    console.log(newDataId);
+    if (data.watched.some(value => value.movieId_card === newDataId.movieId_card)) {
+        elems.addToWatchedBtn.textContent = "WATCHED";
+        elems.addToWatchedBtn.disabled = true;
+        // return elems.addToWatchedBtn;
+    } else {
+        elems.addToWatchedBtn.disabled = false;
+        elems.addToWatchedBtn.textContent = "ADD TO WATCHED";
+        // return elems.addToWatchedBtn;
+    };
+
+    if (data.hell.some(value => value.movieId_card === newDataId.movieId_card)) {
+        elems.addToHellBtn.textContent = "IN HELL";
+        elems.addToHellBtn.disabled = true;
+        // return elems.addToHellBtn;
+    } else {
+        elems.addToHellBtn.textContent = "ADD TO HELL";
+        elems.addToHellBtn.disabled = false;
+        // return elems.addToHellBtn;
+    };
+
+    // console.log("ID=", moviesApiService.movie_id);
 
 }
 
@@ -176,19 +201,19 @@ function onAddToWatchClick(evt) {
 
         idStorage.watched.push(moviesApiService.dataStorageObj);
         localStorage.setItem('saved-data', JSON.stringify(idStorage));
-        elems.addToWatchedBtn.textContent = "ADDED TO WATCH";
+        elems.addToWatchedBtn.textContent = "WATCHED";
         elems.addToWatchedBtn.disabled = true;
     } else {
         const newDataId = moviesApiService.dataStorageObj;
         const data = JSON.parse(savedData);
-        if (data.watched.some(value => value === newDataId)) {
-            elems.addToWatchedBtn.textContent = "ADDED TO WATCH";
+        if (data.watched.some(value => value.movieId_card === newDataId.movieId_card)) {
+            elems.addToWatchedBtn.textContent = " WATCHED";
             elems.addToWatchedBtn.disabled = true;
             return;
         };
         data.watched.push(newDataId);
         localStorage.setItem('saved-data', JSON.stringify(data));
-        elems.addToWatchedBtn.textContent = "ADDED TO WATCH";
+        elems.addToWatchedBtn.textContent = "WATCHED";
         elems.addToWatchedBtn.disabled = true;
     }
 }
@@ -203,19 +228,19 @@ function onAddToHellClick(evt) {
 
         idStorage.hell.push(moviesApiService.dataStorageObj);
         localStorage.setItem('saved-data', JSON.stringify(idStorage));
-        elems.addToHellBtn.textContent = "ADDED TO HELL";
+        elems.addToHellBtn.textContent = "IN HELL";
         elems.addToHellBtn.disabled = true;
     } else {
         const newDataId = moviesApiService.dataStorageObj;
         const data = JSON.parse(savedData);
-        if (data.hell.some(value => value === newDataId)) {
-            elems.addToHellBtn.textContent = "ADDED TO HELL";
+        if (data.hell.some(value => value.movieId_card === newDataId.movieId_card)) {
+            elems.addToHellBtn.textContent = "IN HELL";
             elems.addToHellBtn.disabled = true;
             return;
         };
         data.hell.push(newDataId);
         localStorage.setItem('saved-data', JSON.stringify(data));
-        elems.addToHellBtn.textContent = "ADDED TO HELL";
+        elems.addToHellBtn.textContent = "IN HELL";
         elems.addToHellBtn.disabled = true;
     }
 }

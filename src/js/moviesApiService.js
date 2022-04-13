@@ -19,9 +19,6 @@ export default class MoviesApiService {
         this.imgLang = "include_image_language=en,null";
         this.searchQuery = '';
         this.movie_id = '';
-        // this.image_type = "image_type=photo";
-        // this.orientation = "orientation=horizontal";
-        // this.safesearch = "safesearch=true";
         this.page = 1;
         this.totalPages = 10;
         this.fetchMovies;
@@ -33,8 +30,6 @@ export default class MoviesApiService {
             movieRelease_date: '',
             movieOverview: '',
         };
-        // this.per_page = 40;
-        // this.searchQuery = '';
     }
 
     async fetchMoviesPopular() {
@@ -99,14 +94,6 @@ export default class MoviesApiService {
         };
         this.page -= 1;
     }
-
-    // get query() {
-    //     return this.searchQuery;
-    // }
-
-    // set query(newQuery) {
-    //     this.searchQuery = newQuery;
-    // }
 
     resetPage() {
         this.page = 1;
