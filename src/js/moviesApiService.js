@@ -1,7 +1,9 @@
 import axios from "axios";
 import Notiflix from 'notiflix';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
-import { popularMoviesLoad, searchMoviesLoad, storageMoviesLoad } from './index.js'
+import { popularMoviesLoad } from "./popularMoviesLoad.js";
+import { searchMoviesLoad } from "./searchMoviesLoad.js";
+
 
 export default class MoviesApiService {
     constructor() {
